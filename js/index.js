@@ -37,7 +37,14 @@ function addNhanVien() {
     return nhanVien;
   }
 }
-
+//khi bấm vào nủt thêm nhân viên
+function buttonThemSinhVien() {
+  document.getElementById("tknv").readOnly = false;
+  document.getElementById("btnCapNhat").style.display = "none";
+  document.getElementById("btnThemNV").style.display = "block";
+}
+document.getElementById("btnThem").onclick = buttonThemSinhVien;
+//khi bấm nút thêm người dùng
 document.getElementById("btnThemNV").onclick = function () {
   var nhanVien = addNhanVien();
   if (nhanVien) {
@@ -60,13 +67,13 @@ function renderNhanVien(arr) {
     var newNhanVien = new NhanVien();
     Object.assign(newNhanVien, nhanVien);
     console.log(newNhanVien);
-    var stringHtml = `<tr>
+    var stringHtml = `<tr style="text-align:left">
     <td>${newNhanVien.tknv}</td>
     <td>${newNhanVien.name}</td>
     <td>${newNhanVien.email}</td>
-    <td>${newNhanVien.datepicker}</td>
+    <td style="text-align:center">${newNhanVien.datepicker}</td>
     <td>${newNhanVien.chucvu}</td>
-    <td>${newNhanVien.tinhTongLuong()}</td>
+    <td style="text-align:right">${newNhanVien.tinhTongLuong()}</td>
     <td>${newNhanVien.xepLoaiNhanVien()}</td>
     <td style="display:flex; border:none">
     <button onclick = "deleteNhanVien('${
@@ -131,7 +138,8 @@ function getInfoNhanVien(tt) {
     arrInput[j].value = nhanVien[id];
   }
   document.getElementById("tknv").readOnly = true;
-  document.getElementById("btnThemNV").disabled = true;
+  document.getElementById("btnCapNhat").style.display = "block";
+  document.getElementById("btnThemNV").style.display = "none";
 }
 
 function updateNhanVien() {
@@ -146,13 +154,14 @@ function updateNhanVien() {
     console.log(arrNhanVien);
     renderNhanVien();
     saveLocalStorage("arrNhanVien", arrNhanVien);
-    document.getElementById("tknv").readOnly = false;
-    document.getElementById("btnThemNV").disabled = false;
-    document.querySelector("#myModal form").reset();
+    var daCapNhap = document.getElementById("tbDCN");
+    daCapNhap.style.display = "block";
+    daCapNhap.innerHTML = "Bạn đã cập nhập";
   }
 }
 document.getElementById("btnCapNhat").onclick = updateNhanVien;
 
+//Search nhân viên theo xếp loại
 function searchNhanVien(event) {
   var valueUser = event.target.value;
   console.log(valueUser);
@@ -176,3 +185,9 @@ function searchNhanVien(event) {
   renderNhanVien(arrNhanVienFilter);
   console.log(arrNhanVienFilter);
 }
+//mất dữ liệu ở input khi đóng
+function buttonDongReset() {
+  document.getElementById("tbDCN").style.display = "none";
+  document.querySelector("#myModal form").reset();
+}
+document.getElementById("btnDong").onclick = buttonDongReset;
